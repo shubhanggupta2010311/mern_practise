@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 const mongoURI: string =
-  "mongodb://shubhanggupta:user1234@undefined/?replicaSet=atlas-qmsrpn-shard-0&ssl=true&authSource=admin";
+  "mongodb+srv://shubhanggupta:user1234@personalfinancetracker.tp0ht.mongodb.net/";
 
 mongoose
   .connect(mongoURI)
@@ -21,6 +21,6 @@ mongoose
 
 app.use("/financial-records", financialRecordRouter);
 
-app.listen(port, () => {
-  console.log(`Server is running on Port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on Port ${PORT}`);
 });

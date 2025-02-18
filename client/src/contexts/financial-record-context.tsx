@@ -38,7 +38,6 @@ export const FinancialRecordsProvider = ({
 
     if (response.ok) {
       const records = await response.json();
-      console.log(records);
       setRecords(records);
     }
   };

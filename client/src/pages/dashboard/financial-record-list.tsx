@@ -137,22 +137,36 @@ export const FinancialRecordList = () => {
     <div className="table-container">
       <table {...getTableProps()} className="table">
         <thead>
-          {headerGroups.map((hg) => (
-            <tr {...hg.getHeaderGroupProps()}>
-              {hg.headers.map((column) => (
-                <th {...column.getHeaderProps()}> {column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
+          {headerGroups.map((hg) => {
+            const { key, ...restHeaderGroupProps } = hg.getHeaderGroupProps();
+            return (
+              <tr key={key} {...restHeaderGroupProps}>
+                {hg.headers.map((column) => {
+                  const { key, ...restColumnProps } = column.getHeaderProps();
+                  return (
+                    <th key={key} {...restColumnProps}>
+                      {column.render("Header")}
+                    </th>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, idx) => {
             prepareRow(row);
+            const { key, ...restRowProps } = row.getRowProps();
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
-                ))}
+              <tr key={key} {...restRowProps}>
+                {row.cells.map((cell) => {
+                  const { key, ...restCellProps } = cell.getCellProps();
+                  return (
+                    <td key={key} {...restCellProps}>
+                      {cell.render("Cell")}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}

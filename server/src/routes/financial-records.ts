@@ -3,18 +3,23 @@ import FinancialRecordModel from "../schema/financial-record";
 
 const router = express.Router();
 
-router.get("/getAllByUserID/:userId", async (req: Request, res: Response) => {
-  try {
+router.get(
+  "/getAllByUserID/:userId",
+  async (req: Request, res: Response): Promise<any> => {
     const userId = req.params.userId;
-    const records = await FinancialRecordModel.find({ userId: userId });
-    if (records.length === 0) {
-      return res.status(404).send("No records found for the user.");
+    try {
+      console.log(`Fetching records for userId: ${userId}`);
+      const records = await FinancialRecordModel.find({ userId: userId });
+      if (records.length === 0) {
+        return res.status(404).send(`No records found for user ID: ${userId}`);
+      }
+      res.status(200).send(records);
+    } catch (err) {
+      console.error(`Error fetching records for user ID: ${userId}`, err);
+      res.status(500).send(`Error fetching records for user ID: ${userId}`);
     }
-    res.status(200).send(records);
-  } catch (err) {
-    res.status(500).send(err);
   }
-});
+);
 
 router.post("/", async (req: Request, res: Response) => {
   try {
@@ -28,7 +33,7 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response): Promise<any> => {
   try {
     const id = req.params.id;
     const newRecordBody = req.body;
@@ -46,7 +51,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", async (req: Request, res: Response): Promise<any> => {
   try {
     const id = req.params.id;
     const record = await FinancialRecordModel.findByIdAndDelete(id);
